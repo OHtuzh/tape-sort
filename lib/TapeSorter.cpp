@@ -1,4 +1,5 @@
 #include "TapeSorter.h"
+#include <stdexcept>
 
 namespace ohtuzh {
 TapeSorter::TapeSorter(std::shared_ptr<ITape> reader,
@@ -7,6 +8,10 @@ TapeSorter::TapeSorter(std::shared_ptr<ITape> reader,
 
 void TapeSorter::Sort(const size_t memory_limit) {
     const size_t kBufferSize = memory_limit / sizeof(int32_t);
+
+    if (kBufferSize == 0) {
+        throw std::runtime_error("Not enough memory!");
+    }
 
     reader_->SwitchMode(ITape::kRead);
     writer_->SwitchMode(ITape::kWrite);
